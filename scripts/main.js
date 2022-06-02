@@ -1,6 +1,6 @@
 class CardApp {
-  constructor() {
-    this.API_URL = 'https://dev.michaljelen.com/mock-card-reader/api/';
+  constructor({dev}) {
+    this.API_URL = dev ? 'http://localhost:3001/' : 'https://dev.michaljelen.com/mock-card-reader/api/';
     this.endpoints = {
       read: 'read',
       write: 'write',
@@ -37,7 +37,7 @@ class CardApp {
     self.changeStatusText('Please insert a card');
 
     async function read() {
-      while (!self.fetchCardSuccess && !self.abortStatus) {
+      if (!self.fetchCardSuccess && !self.abortStatus) {
         await self.pollDelay();
 
         const response = await fetch(self.API_URL + self.endpoints.read, {
@@ -49,6 +49,8 @@ class CardApp {
         if (result.status === 'ok') {
           self.fetchCardSuccess = true;
           return result;
+        } else {
+          return read();
         }
       }
       return Promise.reject();
@@ -70,10 +72,8 @@ class CardApp {
       await fetch(self.API_URL + self.endpoints.write, {
         method: 'POST',
         headers: {
-          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        mode: 'no-cors',
         signal: self.abortController.signal,
         body: JSON.stringify({
           cardId: data.cardId,
@@ -121,5 +121,7 @@ class CardApp {
   }
 }
 
-const cardApp = new CardApp();
+const cardApp = new CardApp({
+  dev: true
+});
 cardApp.init();
