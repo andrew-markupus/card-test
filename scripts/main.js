@@ -74,6 +74,7 @@ class CardApp {
         headers: {
           'Content-Type': 'application/json',
         },
+        mode: 'no-cors',
         signal: self.abortController.signal,
         body: JSON.stringify({
           cardId: data.cardId,
