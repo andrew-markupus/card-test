@@ -40,8 +40,6 @@ class CardApp {
       while (!self.fetchCardSuccess && !self.abortStatus) {
         await self.pollDelay();
 
-        self.abortController = new AbortController();
-
         const response = await fetch(self.API_URL + self.endpoints.read, {
             signal: self.abortController.signal
         });
@@ -68,7 +66,6 @@ class CardApp {
     self.changeStatusText('Writing');
 
     async function write() {
-      self.abortController = new AbortController();
 
       await fetch(self.API_URL + self.endpoints.write, {
         method: 'POST',
@@ -99,7 +96,7 @@ class CardApp {
   reset() {
     this.fetchCardSuccess = false;
     this.abortStatus = false;
-    this.abortController = null;
+    this.abortController = new AbortController();
   }
 
   abort() {
