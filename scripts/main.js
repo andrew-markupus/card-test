@@ -58,6 +58,8 @@ class CardApp {
 
     read().then((result) => {
       self.writeCard(result);
+    }).catch((e) => {
+      console.error(e);
     });
   }
 
@@ -89,6 +91,8 @@ class CardApp {
       setTimeout(() => {
         self.showScreen(self.screens.start);
       }, 500);
+    }).catch((e) => {
+      console.error(e);
     });
   }
 
