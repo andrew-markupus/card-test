@@ -122,6 +122,6 @@ class CardApp {
 }
 
 const cardApp = new CardApp({
-  dev: true
+  // dev: true
 });
 cardApp.init();
